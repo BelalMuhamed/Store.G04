@@ -7,13 +7,17 @@ using System.Threading.Tasks;
 
 namespace Store.G04.Core.Entities
 {
-    internal class Product:BaseEntity<int>
+    public class Product:BaseEntity<int>
     {
         public string Name { get; set; }
         public string Descreption { get; set; }
         public string PictureUrl { get; set; }
         [DataType(DataType.Currency)]
         public decimal Price { get; set; }
+        public int? BrandId { get; set; }
+        public ProductBrand Brand { get; set; }
+        public int? TypeId { get; set; }
+        public ProductType Type { get; set; }
 
     }
 }
