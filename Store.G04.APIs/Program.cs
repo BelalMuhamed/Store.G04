@@ -1,7 +1,12 @@
 
 using Microsoft.EntityFrameworkCore;
+using Store.G04.Core.Repositories.Contract;
 using Store.G04.Repository.Data;
 using Store.G04.Repository.Data.Context;
+using Store.G04.Repository.Repositores;
+using Store.G04.Service.Services.ProductServices;
+using AutoMapper;
+using Store.G04.Core.Profiles;
 
 namespace Store.G04.APIs
 {
@@ -19,6 +24,9 @@ namespace Store.G04.APIs
             builder.Services.AddSwaggerGen();
             //allow dependency injection to open the connection with data base 
             builder.Services.AddDbContext<StoreDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddScoped<IProductService, ProductService>();
+            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
+            builder.Services.AddAutoMapper(m => m.AddProfile(new ProductProfile()));
             var app = builder.Build();
           using var Scope = app.Services.CreateScope();
             var Services = Scope.ServiceProvider;
