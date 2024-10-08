@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Store.G04.Core.Entities
 {
-    internal class ProductBrand:BaseEntity<int>
+    public class ProductBrand:BaseEntity<int>
     {
         public string Name { get; set; }
     }
