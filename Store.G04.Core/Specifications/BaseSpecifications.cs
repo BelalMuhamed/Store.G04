@@ -13,6 +13,8 @@ namespace Store.G04.Core.Specifications
         public Expression<Func<TEntity, bool>> Criteria { get; set; } = null;
 
         public List<Expression<Func<TEntity, object>>> Includes { get; set; } = new List<Expression<Func<TEntity, object>>>();
+        public Expression<Func<TEntity, object>> OrderBy { get ; set ; }
+
         public BaseSpecifications(Expression<Func<TEntity, bool>> expression)
         {
             Criteria = expression;

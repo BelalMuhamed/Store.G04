@@ -19,6 +19,10 @@ namespace Store.G04.Repository.Repositores
             {
                 Query = Query.Where(Spec.Criteria);
             }
+            if(Spec.OrderBy is not null)
+            {
+                Query=Query.OrderBy(Spec.OrderBy);
+            }
             Query = Spec.Includes.Aggregate(Query, (CuurentQuery, includeExpression) => CuurentQuery.Include(includeExpression));
             return Query;
         }

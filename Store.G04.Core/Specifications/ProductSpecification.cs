@@ -13,8 +13,27 @@ namespace Store.G04.Core.Specifications
         {
             addincludes();
         }
-        public ProductSpecification()
+        public ProductSpecification(string? sort)
         {
+            if (!string.IsNullOrEmpty(sort))
+            {
+                switch (sort)
+                {
+                  
+                        
+                    case "priceasc":
+                        OrderBy = p => p.Price;
+                        break;
+                    default:
+                        OrderBy = p => p.Name;
+                        break;
+                }
+            }
+            else
+            {
+                OrderBy = p => p.Name;
+                
+            }
             addincludes();
         }
         private void addincludes()

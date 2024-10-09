@@ -16,9 +16,9 @@ namespace Store.G04.APIs.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery]string? sort)
         { 
-             var result =await _service.GetAllProductsAsync();
+             var result =await _service.GetAllProductsAsync(sort);
             return Ok(result);
         }
         [HttpGet("brands")]
