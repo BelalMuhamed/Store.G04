@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
 using Store.G04.Core.Entities;
 using Store.G04.Core.Repositories.Contract;
+using Store.G04.Core.Specifications;
 using Store.G04.Repository.Data.Context;
 using System;
 using System.Collections.Generic;
@@ -38,6 +39,7 @@ namespace Store.G04.Repository.Repositores
             return await _context.Set<TEntity>().ToListAsync();
         }
 
+     
         public async Task<TEntity> GetAsync(TKey Id)
         {
             if (typeof(TEntity) == typeof(Product))
@@ -46,10 +48,21 @@ namespace Store.G04.Repository.Repositores
             }
             return await _context.Set<TEntity>().FindAsync(Id);
         }
-
+        
         public void Update(TEntity entity)
         {
             _context.Update(entity);
         }
+        public async Task<IEnumerable<TEntity>> GetAllWithSpecificAsync(ISpecifications<TEntity,TKey>spec)
+        {
+            return await SpecificationEvalutor<TEntity, TKey>.CreateQuery(_context.Set<TEntity>(), spec).ToListAsync();
+        }
+
+
+        public async  Task<TEntity> GetWithSpecificAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await SpecificationEvalutor<TEntity, TKey>.CreateQuery(_context.Set<TEntity>(), spec).FirstOrDefaultAsync();
+        }
+
     }
 }
