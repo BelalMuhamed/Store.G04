@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Store.G04.Core.Repositories.Contract
+namespace Store.G04.Core.Services.Contract
 {
     public interface IProductService
     {

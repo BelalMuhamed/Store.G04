@@ -2,6 +2,7 @@
 using Store.G04.Core.DTOs.ProductDto;
 using Store.G04.Core.Entities;
 using Store.G04.Core.Repositories.Contract;
+using Store.G04.Core.Services.Contract;
 using System;
 using System.Collections.Generic;
 using System.Linq;

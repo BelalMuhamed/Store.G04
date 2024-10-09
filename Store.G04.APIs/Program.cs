@@ -7,6 +7,7 @@ using Store.G04.Repository.Repositores;
 using Store.G04.Service.Services.ProductServices;
 using AutoMapper;
 using Store.G04.Core.Profiles;
+using Store.G04.Core.Services.Contract;
 
 namespace Store.G04.APIs
 {

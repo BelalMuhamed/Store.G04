@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Store.G04.Core.Repositories.Contract;
+using Store.G04.Core.Services.Contract;
 using System.Collections;
 
 namespace Store.G04.APIs.Controllers
