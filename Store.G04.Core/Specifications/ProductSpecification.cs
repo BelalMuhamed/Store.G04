@@ -13,7 +13,9 @@ namespace Store.G04.Core.Specifications
         {
             addincludes();
         }
-        public ProductSpecification(string? sort)
+        public ProductSpecification(string? sort, int? brandid, int? typeid):base( p=>
+            (!brandid.HasValue||p.BrandId==brandid)&&(!typeid.HasValue||p.TypeId==typeid)
+            )
         {
             if (!string.IsNullOrEmpty(sort))
             {
