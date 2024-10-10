@@ -14,7 +14,7 @@ namespace Store.G04.Core.Specifications
             addincludes();
         }
         public ProductSpecification(ProductSpecParams param) :base( p=>
-            (!param.brandid.HasValue||p.BrandId== param.brandid) &&(!param.typeid.HasValue||p.TypeId== param.typeid)
+           (string.IsNullOrEmpty(param.search)||p.Name.Contains(param.search))&& (!param.brandid.HasValue||p.BrandId== param.brandid) &&(!param.typeid.HasValue||p.TypeId== param.typeid)
             )
         {
             if (!string.IsNullOrEmpty(param.sort))
