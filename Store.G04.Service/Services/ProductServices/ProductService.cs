@@ -4,6 +4,7 @@ using Store.G04.Core.Entities;
 using Store.G04.Core.Repositories.Contract;
 using Store.G04.Core.Services.Contract;
 using Store.G04.Core.Specifications;
+using Store.G04.Repository.Repositores;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +29,15 @@ namespace Store.G04.Service.Services.ProductServices
         
            
         //GetAllProductsAsync
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(string? sort,int? brandid,int?typeid,int?pagesize,int?pageindex)
+        public async Task<PaginationResponse<ProductDto>> GetAllProductsAsync(ProductSpecParams param)
         {
-            var Spec = new ProductSpecification(sort, brandid, typeid,pagesize.Value,pageindex.Value);
-
-           return  _mapper.Map<IEnumerable<ProductDto>>(await _unitofwork.Repositorey<Product, int>().GetAllWithSpecificAsync(Spec));
+            var spec = new ProductSpecification(param);
+            
+            var products = await _unitofwork.Repositorey<Product, int>().GetAllWithSpecificAsync(spec);
+            var mapped = _mapper.Map<IEnumerable<ProductDto>>(products);
+            var countt = new ProductConunt(param);
+           var count = await _unitofwork.Repositorey<Product, int>().GetCountAsync(countt);
+            return new PaginationResponse<ProductDto>(param.pagesize, param.pageindex, count, mapped);
         }
         //GetAllTypesAsync
         public async  Task<IEnumerable<TypeBrandDto>> GetAllTypesAsync()

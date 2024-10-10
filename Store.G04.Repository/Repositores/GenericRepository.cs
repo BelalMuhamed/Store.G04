@@ -64,5 +64,11 @@ namespace Store.G04.Repository.Repositores
             return await SpecificationEvalutor<TEntity, TKey>.CreateQuery(_context.Set<TEntity>(), spec).FirstOrDefaultAsync();
         }
 
+        public async Task<int> GetCountAsync(ISpecifications<TEntity, TKey> spec)
+        {
+            return await SpecificationEvalutor<TEntity,TKey>.CreateQuery(_context.Set<TEntity>(), spec).CountAsync();
+        }
+
+        
     }
 }

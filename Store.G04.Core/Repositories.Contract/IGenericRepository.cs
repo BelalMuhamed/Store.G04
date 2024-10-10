@@ -17,5 +17,6 @@ namespace Store.G04.Core.Repositories.Contract
         public Task AddASync(TEntity entity);
         public void Update(TEntity entity);
         public void Delete(TEntity entity);
+        public Task<int> GetCountAsync(ISpecifications<TEntity,TKey> spec);
     }
 }

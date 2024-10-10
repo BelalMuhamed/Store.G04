@@ -9,17 +9,17 @@ namespace Store.G04.Core.Specifications
 {
     public class ProductSpecification:BaseSpecifications<Product,int>
     {
-        public ProductSpecification(int id):base( p =>p.Id==id)
+        public ProductSpecification( int id):base( p =>p.Id==id)
         {
             addincludes();
         }
-        public ProductSpecification(string? sort, int? brandid, int? typeid,int pagesize,int pageindex):base( p=>
-            (!brandid.HasValue||p.BrandId==brandid)&&(!typeid.HasValue||p.TypeId==typeid)
+        public ProductSpecification(ProductSpecParams param) :base( p=>
+            (!param.brandid.HasValue||p.BrandId== param.brandid) &&(!param.typeid.HasValue||p.TypeId== param.typeid)
             )
         {
-            if (!string.IsNullOrEmpty(sort))
+            if (!string.IsNullOrEmpty(param.sort))
             {
-                switch (sort)
+                switch (param.sort)
                 {
                   
                         
@@ -37,7 +37,7 @@ namespace Store.G04.Core.Specifications
                 
             }
             addincludes();
-            addpaginagtion(pagesize*(pageindex-1),  pagesize);
+            addpaginagtion(param.pagesize*(param.pageindex-1),  param.pagesize);
         }
         private void addincludes()
         {

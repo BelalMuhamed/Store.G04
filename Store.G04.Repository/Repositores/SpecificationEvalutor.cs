@@ -30,5 +30,7 @@ namespace Store.G04.Repository.Repositores
             Query = Spec.Includes.Aggregate(Query, (CuurentQuery, includeExpression) => CuurentQuery.Include(includeExpression));
             return Query;
         }
+
+       
     }
 }
