@@ -7,6 +7,7 @@ using Store.G04.Repository.Repositores;
 using Store.G04.Service.Services.ProductServices;
 using AutoMapper;
 using Store.G04.Core.Profiles;
+using Store.G04.Core.Services.Contract;
 
 namespace Store.G04.APIs
 {
@@ -26,7 +27,7 @@ namespace Store.G04.APIs
             builder.Services.AddDbContext<StoreDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddScoped<IProductService, ProductService>();
             builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-            builder.Services.AddAutoMapper(m => m.AddProfile(new ProductProfile()));
+            builder.Services.AddAutoMapper(m => m.AddProfile(new ProductProfile(builder.Configuration)));
             var app = builder.Build();
           using var Scope = app.Services.CreateScope();
             var Services = Scope.ServiceProvider;
@@ -54,7 +55,7 @@ namespace Store.G04.APIs
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
 
             app.MapControllers();
 

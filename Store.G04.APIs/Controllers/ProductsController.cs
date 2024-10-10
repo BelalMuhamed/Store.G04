@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Store.G04.Core.Repositories.Contract;
+using Store.G04.Core.DTOs.ProductDto;
+using Store.G04.Core.Services.Contract;
+using Store.G04.Core.Specifications;
 using System.Collections;
 
 namespace Store.G04.APIs.Controllers
@@ -16,9 +18,9 @@ namespace Store.G04.APIs.Controllers
             _service = service;
         }
         [HttpGet]
-        public async Task<IActionResult> GetAllProducts()
+        public async Task<IActionResult> GetAllProducts([FromQuery] ProductSpecParams param)
         { 
-             var result =await _service.GetAllProductsAsync();
+             var result =await _service.GetAllProductsAsync(param);
             return Ok(result);
         }
         [HttpGet("brands")]
