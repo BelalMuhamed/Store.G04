@@ -23,6 +23,10 @@ namespace Store.G04.Repository.Repositores
             {
                 Query=Query.OrderBy(Spec.OrderBy);
             }
+            if (Spec.IsPagination == true) 
+            {
+                Query=Query.Skip(Spec.Skip).Take(Spec.Take);    
+            }
             Query = Spec.Includes.Aggregate(Query, (CuurentQuery, includeExpression) => CuurentQuery.Include(includeExpression));
             return Query;
         }

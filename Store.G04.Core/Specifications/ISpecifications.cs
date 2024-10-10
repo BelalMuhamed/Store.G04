@@ -13,6 +13,9 @@ namespace Store.G04.Core.Specifications
         public Expression<Func<TEntity,bool>> Criteria { get; set; }
         public List<Expression<Func<TEntity, object>>> Includes { get; set; }
         public Expression<Func<TEntity,object>> OrderBy { get; set; }
+        public bool IsPagination {  get; set; }
+        public int Skip { get; set; }
+        public int Take { get; set; }
 
     }
 }

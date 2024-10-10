@@ -13,7 +13,7 @@ namespace Store.G04.Core.Specifications
         {
             addincludes();
         }
-        public ProductSpecification(string? sort, int? brandid, int? typeid):base( p=>
+        public ProductSpecification(string? sort, int? brandid, int? typeid,int pagesize,int pageindex):base( p=>
             (!brandid.HasValue||p.BrandId==brandid)&&(!typeid.HasValue||p.TypeId==typeid)
             )
         {
@@ -37,11 +37,13 @@ namespace Store.G04.Core.Specifications
                 
             }
             addincludes();
+            addpaginagtion(pagesize*(pageindex-1),  pagesize);
         }
         private void addincludes()
         {
             Includes.Add(p =>p.Brand);
             Includes.Add(p =>p.Type);
         }
+        
     }
 }
