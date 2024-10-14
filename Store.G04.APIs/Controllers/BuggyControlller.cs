@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.G04.APIs.Errors;
 using Store.G04.Repository.Data.Context;
 
 namespace Store.G04.APIs.Controllers
@@ -18,7 +19,7 @@ namespace Store.G04.APIs.Controllers
         public async Task<IActionResult> GetNotFoundRequest() 
         {
             var product =await  _context.Products.FindAsync(100);
-            if (product is null) { return NotFound(); }
+            if (product is null) { return NotFound( new ApiResponse(404)); }
             return Ok(product);
         }
         [HttpGet("ServerError")]
