@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.G04.APIs.Errors;
 using Store.G04.Core.DTOs.ProductDto;
 using Store.G04.Core.Services.Contract;
 using Store.G04.Core.Specifications;
@@ -36,11 +37,13 @@ namespace Store.G04.APIs.Controllers
             return Ok(result);
         }
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
             if(id ==null) return BadRequest();
             var result = await _service.GetProductById(id);
-            if(result == null) return NotFound();
+            if(result == null) return NotFound(new ApiResponse(404));
             return Ok(result);
         }
     }

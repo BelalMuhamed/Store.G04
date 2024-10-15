@@ -8,6 +8,12 @@ using Store.G04.Service.Services.ProductServices;
 using AutoMapper;
 using Store.G04.Core.Profiles;
 using Store.G04.Core.Services.Contract;
+using Microsoft.AspNetCore.Mvc;
+using Store.G04.APIs.Errors;
+using Microsoft.AspNetCore.Http.HttpResults;
+using Store.G04.APIs.MidleWareException;
+using Store.G04.APIs.Extensions;
+using StackExchange.Redis;
 
 namespace Store.G04.APIs
 {
@@ -23,11 +29,14 @@ namespace Store.G04.APIs
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
+            {
+                var connection = builder.Configuration.GetConnectionString("RedisConnection");
+                return ConnectionMultiplexer.Connect(connection);
+            });
             //allow dependency injection to open the connection with data base 
             builder.Services.AddDbContext<StoreDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<IProductService, ProductService>();
-            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-            builder.Services.AddAutoMapper(m => m.AddProfile(new ProductProfile(builder.Configuration)));
+            builder.Services.AddAppServices(builder.Configuration);
             var app = builder.Build();
           using var Scope = app.Services.CreateScope();
             var Services = Scope.ServiceProvider;
@@ -44,14 +53,14 @@ namespace Store.G04.APIs
                 var logger =LoggerFactory.CreateLogger<Program>();
                 logger.LogError(ex, "there is an error ");
             }
-
+           
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseMiddleware<ExceptionMiddleWare>();
+                app.AddSwagger();
             }
-
+            app.UseStatusCodePagesWithReExecute("/Errors/{0}");
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
