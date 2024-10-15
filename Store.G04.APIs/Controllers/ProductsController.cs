@@ -37,6 +37,8 @@ namespace Store.G04.APIs.Controllers
             return Ok(result);
         }
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ProductDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiResponse),StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetById(int id)
         {
             if(id ==null) return BadRequest();
