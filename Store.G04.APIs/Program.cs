@@ -11,6 +11,7 @@ using Store.G04.Core.Services.Contract;
 using Microsoft.AspNetCore.Mvc;
 using Store.G04.APIs.Errors;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Store.G04.APIs.MidleWareException;
 
 namespace Store.G04.APIs
 {
@@ -62,10 +63,11 @@ namespace Store.G04.APIs
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
+                app.UseMiddleware<ExceptionMiddleWare>();
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+            app.UseStatusCodePagesWithReExecute("/Errors/{0}");
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
