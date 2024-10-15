@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Store.G04.APIs.Errors;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Store.G04.APIs.MidleWareException;
+using Store.G04.APIs.Extensions;
 
 namespace Store.G04.APIs
 {
@@ -29,20 +30,7 @@ namespace Store.G04.APIs
             builder.Services.AddSwaggerGen();
             //allow dependency injection to open the connection with data base 
             builder.Services.AddDbContext<StoreDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
-            builder.Services.AddScoped<IProductService, ProductService>();
-            builder.Services.AddScoped<IUnitOfWork,UnitOfWork>();
-            builder.Services.AddAutoMapper(m => m.AddProfile(new ProductProfile(builder.Configuration)));
-            builder.Services.Configure<ApiBehaviorOptions>(options =>
-            options.InvalidModelStateResponseFactory=(actioncontext)=>
-            {
-                var errors = actioncontext.ModelState.Where( p => p.Value.Errors.Count()>0).SelectMany(p=>p.Value.Errors)
-                .Select(e=>e.ErrorMessage).ToArray();
-                var ValidationErrorResponse = new ApiValidationErrorResponse()
-                {
-                    Errors = errors
-                };
-                return new BadRequestObjectResult(ValidationErrorResponse);
-            });
+            builder.Services.AddAppServices(builder.Configuration);
             var app = builder.Build();
           using var Scope = app.Services.CreateScope();
             var Services = Scope.ServiceProvider;
@@ -64,8 +52,7 @@ namespace Store.G04.APIs
             if (app.Environment.IsDevelopment())
             {
                 app.UseMiddleware<ExceptionMiddleWare>();
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.AddSwagger();
             }
             app.UseStatusCodePagesWithReExecute("/Errors/{0}");
             app.UseHttpsRedirection();
