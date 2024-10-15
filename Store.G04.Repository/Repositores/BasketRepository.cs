@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Store.G04.Repository.Repositores
 {
-    internal class BasketRepository : IBasketRepository
+    public class BasketRepository : IBasketRepository
     {
         private readonly IDatabase _context;
 

@@ -15,6 +15,7 @@ namespace Store.G04.APIs.Extensions
            Services.AddScoped<IProductService, ProductService>();
            Services.AddScoped<IUnitOfWork, UnitOfWork>();
            Services.AddAutoMapper(m => m.AddProfile(new ProductProfile(Configuration)));
+            Services.AddScoped<IBasketRepository,BasketRepository>();
            Services.Configure<ApiBehaviorOptions>(options =>
             options.InvalidModelStateResponseFactory = (actioncontext) =>
             {

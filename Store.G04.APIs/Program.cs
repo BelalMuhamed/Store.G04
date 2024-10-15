@@ -29,6 +29,11 @@ namespace Store.G04.APIs
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
+            {
+                var connection = builder.Configuration.GetConnectionString("RedisConnection");
+                return ConnectionMultiplexer.Connect(connection);
+            });
             //allow dependency injection to open the connection with data base 
             builder.Services.AddDbContext<StoreDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
             builder.Services.AddAppServices(builder.Configuration);
@@ -48,11 +53,7 @@ namespace Store.G04.APIs
                 var logger =LoggerFactory.CreateLogger<Program>();
                 logger.LogError(ex, "there is an error ");
             }
-            builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
-            {
-                var connection = builder.Configuration.GetConnectionString("RedisConnection");
-                return  ConnectionMultiplexer.Connect(connection);
-            });
+           
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
