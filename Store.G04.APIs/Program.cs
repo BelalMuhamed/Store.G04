@@ -13,6 +13,7 @@ using Store.G04.APIs.Errors;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Store.G04.APIs.MidleWareException;
 using Store.G04.APIs.Extensions;
+using StackExchange.Redis;
 
 namespace Store.G04.APIs
 {
@@ -47,7 +48,11 @@ namespace Store.G04.APIs
                 var logger =LoggerFactory.CreateLogger<Program>();
                 logger.LogError(ex, "there is an error ");
             }
-
+            builder.Services.AddSingleton<IConnectionMultiplexer>(options =>
+            {
+                var connection = builder.Configuration.GetConnectionString("RedisConnection");
+                return  ConnectionMultiplexer.Connect(connection);
+            });
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
