@@ -33,7 +33,7 @@ namespace Store.G04.APIs.MidleWareException
                     PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
                 };
                 var jsonresponse = JsonSerializer.Serialize(response, Options);
-                context.Response.WriteAsync(jsonresponse);
+               await  context.Response.WriteAsync(jsonresponse);
             }
         }
     }
