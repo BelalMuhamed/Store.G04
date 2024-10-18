@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Store.G04.APIs.MidleWareException;
 using Store.G04.APIs.Extensions;
 using StackExchange.Redis;
+using Store.G04.Repository.Identity;
 
 namespace Store.G04.APIs
 {
@@ -36,15 +37,19 @@ namespace Store.G04.APIs
             });
             //allow dependency injection to open the connection with data base 
             builder.Services.AddDbContext<StoreDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+            builder.Services.AddDbContext<AppIdentityDbContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("IdentityConnection")));
             builder.Services.AddAppServices(builder.Configuration);
             var app = builder.Build();
           using var Scope = app.Services.CreateScope();
             var Services = Scope.ServiceProvider;
-            var Context = Services.GetRequiredService<StoreDbContext>();
+           
             var LoggerFactory =Services.GetRequiredService<ILoggerFactory>();
             try
             {
+                var Context = Services.GetRequiredService<StoreDbContext>();
                 await Context.Database.MigrateAsync();
+                var IdentityContext = Services.GetRequiredService<AppIdentityDbContext>();
+                await IdentityContext.Database.MigrateAsync();
                 await StoreDbContextSeeds.SeedAsync(Context);
 
             }
