@@ -25,12 +25,12 @@ namespace Store.G04.Service.Services.CacheServ
             else { return response.ToString(); }
         }
 
-        public async Task<bool> SetDataInCacheAsync(string key, object Response, TimeSpan ExpiredTime)
+        public async Task SetDataInCacheAsync(string key, object Response, TimeSpan ExpiredTime)
         {
-            if(Response == null) { return false; }
+            if(Response == null) { return; }
             var options = new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase };
 
-           return await _Database.StringSetAsync(key, JsonSerializer.Serialize(Response,options), ExpiredTime);
+            await _Database.StringSetAsync(key, JsonSerializer.Serialize(Response,options), ExpiredTime);
 
             
         }

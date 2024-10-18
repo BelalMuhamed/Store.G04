@@ -2,8 +2,10 @@
 using Store.G04.APIs.Errors;
 using Store.G04.Core.Profiles;
 using Store.G04.Core.Repositories.Contract;
+using Store.G04.Core.Repositories.Contract.Cache;
 using Store.G04.Core.Services.Contract;
 using Store.G04.Repository.Repositores;
+using Store.G04.Service.Services.CacheServ;
 using Store.G04.Service.Services.ProductServices;
 
 namespace Store.G04.APIs.Extensions
@@ -12,6 +14,7 @@ namespace Store.G04.APIs.Extensions
     {
         public static IServiceCollection AddAppServices(this IServiceCollection Services,IConfiguration Configuration)
         {
+            Services.AddSingleton<ICacheService,CacheService>();
            Services.AddScoped<IProductService, ProductService>();
            Services.AddScoped<IUnitOfWork, UnitOfWork>();
            Services.AddAutoMapper(m => m.AddProfile(new ProductProfile(Configuration)));

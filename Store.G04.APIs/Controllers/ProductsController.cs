@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Store.G04.APIs.Caching;
 using Store.G04.APIs.Errors;
 using Store.G04.Core.DTOs.ProductDto;
 using Store.G04.Core.Services.Contract;
@@ -18,6 +19,7 @@ namespace Store.G04.APIs.Controllers
         {
             _service = service;
         }
+        [Cached(12)]
         [HttpGet]
         public async Task<IActionResult> GetAllProducts([FromQuery] ProductSpecParams param)
         { 
